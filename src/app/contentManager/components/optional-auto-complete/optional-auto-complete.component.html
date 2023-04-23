@@ -1,0 +1,33 @@
+<div class="p-fluid">
+    <div class="field grid">
+        <div
+            class="col-12 md:col-2 flex lg:justify-content-center align-items-center"
+        >
+            <strong> File Source Folder </strong>
+        </div>
+        <div class="col-12 md:col-4">
+            <input type="text" pInputText [(ngModel)]="sourceFileFolder" />
+        </div>
+        <div class="col-12 md:col-4">
+            <p-autoComplete
+                [(ngModel)]="selectedFolder"
+                [suggestions]="filteredFolders"
+                (completeMethod)="filterFolders($event)"
+                (onSelect)="setSourceFolder()"
+                field="name"
+                [dropdown]="true"
+            ></p-autoComplete>
+        </div>
+        <div class="col-12 mb-2 md:col-2 md:mb-0">
+            <button
+                pbutton=""
+                label="Submit"
+                class="p-element p-button p-component"
+                ng-reflect-label="Submit"
+                (click)="getFilelistByFolder()"
+            >
+                <span class="p-button-label">Get List</span>
+            </button>
+        </div>
+    </div>
+</div>

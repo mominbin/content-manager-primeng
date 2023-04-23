@@ -1,0 +1,58 @@
+<div class="px-6 py-6 surface-section">
+    <cm-optional-auto-complete
+        [folders]="folders"
+        (listRetrived)="getFileList($event)"
+    ></cm-optional-auto-complete>
+    <div class="col-12">
+        <p-pickList
+            [source]="sourceFiles"
+            [target]="targetFiles"
+            filterBy="name"
+            sourceFilterPlaceholder="Search by name"
+            targetFilterPlaceholder="Search by name"
+            sourceHeader="File List"
+            targetHeader="To Handle"
+            (onMoveAllToSource)="targetValueChanged($event)"
+            (onMoveAllToTarget)="targetValueChanged($event)"
+            (onMoveToSource)="targetValueChanged($event)"
+            (onMoveToTarget)="targetValueChanged($event)"
+            (onTargetReorder)="targetValueChanged($event)"
+            [dragdrop]="true"
+            [responsive]="true"
+            [sourceStyle]="{ height: '500px' }"
+            [targetStyle]="{ height: '500px' }"
+        >
+            <ng-template let-file pTemplate="item">
+                <div>{{ file.name }}</div>
+            </ng-template>
+        </p-pickList>
+    </div>
+    <div class="p-fluid">
+        <div class="field grid">
+            <div
+                class="col-12 md:col-2 flex lg:justify-content-center align-items-center"
+            >
+                <strong> Merged File Name </strong>
+            </div>
+            <div class="col-12 md:col-8">
+                <input
+                    pInputText
+                    id="email3"
+                    type="text"
+                    [(ngModel)]="outputFileName"
+                />
+            </div>
+            <div class="col-12 mb-2 md:col-2 md:mb-0">
+                <button
+                    pbutton=""
+                    label="Submit"
+                    class="p-element p-button p-component"
+                    ng-reflect-label="Submit"
+                    (click)="mergeVideo()"
+                >
+                    <span class="p-button-label">Merge</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
