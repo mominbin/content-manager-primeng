@@ -25,6 +25,7 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                                     './contentManager/components/ffmpeg/ffmpeg.module'
                                 ).then((m) => m.FfmpegModule),
                         },
+
                         {
                             path: 'filehandler',
                             loadChildren: () =>
@@ -33,11 +34,11 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                                 ).then((m) => m.FileHandlerModule),
                         },
                         {
-                            path: 'ffmpeg',
+                            path: 'videolibrary',
                             loadChildren: () =>
                                 import(
-                                    './contentManager/components/ffmpeg/ffmpeg.module'
-                                ).then((m) => m.FfmpegModule),
+                                    './contentManager/components/video-library/video-library.module'
+                                ).then((m) => m.VideoLibraryModule),
                         },
                         {
                             path: 'uikit',

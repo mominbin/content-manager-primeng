@@ -304,18 +304,18 @@
                     ]
                 },
                 {
-                    "label": "Video Search",
+                    "label": "Video Library",
                     "icon": "pi pi-fw pi-search",
                     "items": [
                         {
-                            "label": "Search By Condition",
+                            "label": "Search Video",
                             "icon": "pi pi-fw pi-filter",
-                            "routerLink": ["/searchByCondition"]
+                            "routerLink": ["/videolibrary/videosearch"]
                         },
                         {
                             "label": "Video Information",
                             "icon": "pi pi-fw pi-info-circle",
-                            "routerLink": ["/videoInfor"]
+                            "routerLink": ["/videolibrary/videodetail"]
                         }
                     ]
                 }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
-import { SpliteVideoPayload } from '../api/type';
+import { RenamePayload, SpliteVideoPayload } from '../api/type';
 let LOCAL_URL = 'http://localhost:8000/';
 
 const FILE_HANDLE = `${LOCAL_URL}filehandle/`;
@@ -58,6 +58,12 @@ export class DataService {
     async spliteVideo(payload: SpliteVideoPayload): Promise<any> {
         return lastValueFrom(
             this.http.post<SpliteVideoPayload>(API_URLS.splitVideo, payload)
+        );
+    }
+
+    async rename(payload: RenamePayload): Promise<any> {
+        return lastValueFrom(
+            this.http.post<RenamePayload>(API_URLS.rename, payload)
         );
     }
 }

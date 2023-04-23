@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ListItem } from 'src/app/contentManager/api/type';
 import { DataService } from 'src/app/contentManager/service/data.service';
 
 @Component({

@@ -8,3 +8,9 @@ export interface SpliteVideoPayload {
     outFolder: string;
     durations: Array<Array<string>>;
 }
+
+export interface RenamePayload {
+    path: string;
+    name: string;
+    newName: string;
+}

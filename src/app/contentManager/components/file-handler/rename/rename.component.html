@@ -1,3 +1,71 @@
-<p>
-  rename works!
-</p>
+<div class="px-6 py-6 surface-section">
+    <cm-optional-autocomplete [folders]="folders"
+        (listRetrived)="getFileList($event)"></cm-optional-autocomplete>
+    <div class="p-fluid">
+        <div class="field grid">
+
+        </div>
+    </div>
+    <div class="py-4">
+        <p-toolbar>
+            <div class="p-toolbar-group-start">
+                <button pbutton
+                    pRipple
+                    class="p-element p-button p-component"
+                    ng-reflect-label="Submit"
+                    [disabled]="!selectedFiles"> <span class="p-button-label">Get checked Files New Name</span>
+                </button>
+            </div>
+            <div class="p-toolbar-group-end">
+                <button pbutton
+                    pRipple
+                    class="p-element p-button p-component"
+                    ng-reflect-label="Submit"
+                    [disabled]="!selectedFiles"> <span class="p-button-label">Rename Checked Files Name</span> </button>
+            </div>
+        </p-toolbar>
+        <p-table #dt
+            [value]="files"
+            [rows]="10"
+            [tableStyle]="{ 'min-width': '75rem' }"
+            [(selection)]="selectedFiles"
+            [rowHover]="true"
+            dataKey="id">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 4rem">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th>Old Name</th>
+                    <th>Do Get New Name</th>
+                    <th>New Name</th>
+                    <th>Do Rename</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body"
+                let-file>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="file"></p-tableCheckbox>
+                    </td>
+                    <td>
+                        {{file.name}}
+                    </td>
+                    <td>
+                        <button pButton
+                            (click)="getNewName(file)">Get Name</button>
+                    </td>
+                    <td>
+                        <input type="text"
+                            pInputText
+                            [(ngModel)]="file.newName" />
+                    </td>
+                    <td>
+                        <button pButton
+                            (click)="rename(file)">Rename</button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListItem } from '../../api/type';
 
 @Component({
-    selector: 'cm-optional-auto-complete',
-    templateUrl: './optional-auto-complete.component.html',
+    selector: 'cm-optional-autocomplete',
+    templateUrl: './optional-autocomplete.component.html',
 })
 export class OptionalAutoCompleteComponent implements OnInit {
     @Input() folders!: ListItem[];

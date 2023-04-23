@@ -1,38 +1,28 @@
 <div class="px-6 py-6 surface-section">
-    <cm-optional-auto-complete
-        [folders]="folders"
-        (listRetrived)="getFileList($event)"
-    ></cm-optional-auto-complete>
+    <cm-optional-autocomplete [folders]="folders"
+        (listRetrived)="getFileList($event)"></cm-optional-autocomplete>
     <div class="p-fluid">
         <div class="field grid">
-            <strong
-                class="col-12 md:col-2 flex lg:justify-content-center align-items-center"
-            >
+            <strong class="col-12 md:col-2 flex lg:justify-content-center align-items-center">
                 File Name
             </strong>
             <div class="col-12 md:col-4">
-                <p-autoComplete
-                    [(ngModel)]="selectedFile"
+                <p-autoComplete [(ngModel)]="selectedFile"
                     [suggestions]="filteredName"
                     (completeMethod)="filterFolders($event)"
                     field="name"
-                    [dropdown]="true"
-                ></p-autoComplete>
+                    [dropdown]="true"></p-autoComplete>
             </div>
-            <div
-                class="col-12 md:col-4 flex align-items-center formgroup-inline"
-            >
+            <div class="col-12 md:col-4 flex align-items-center formgroup-inline">
                 <strong class="px-4">merge the files after splited</strong>
                 <p-inputSwitch [(ngModel)]="mergeAfterSplit"></p-inputSwitch>
             </div>
             <div class="col-12 md:col-2">
-                <button
-                    pbutton=""
+                <button pbutton=""
                     class="p-element p-button p-component"
                     ng-reflect-label="Submit"
                     (click)="playVideo()"
-                    [disabled]="!selectedFile"
-                >
+                    [disabled]="!selectedFile">
                     <span class="p-button-label">Play It</span>
                 </button>
             </div>
@@ -42,42 +32,34 @@
     <div class="py-4">
         <p-toolbar>
             <div class="p-toolbar-group-start">
-                <p-button
-                    label="New"
+                <p-button label="New"
                     icon="pi pi-plus"
                     class="mr-2"
-                    (click)="addDuration()"
-                ></p-button>
-                <button
-                    pButton
+                    (click)="addDuration()"></p-button>
+                <button pButton
                     pRipple
                     icon="pi pi-trash"
                     class="p-button-danger mr-2"
                     [disabled]="!selectedProducts || !selectedProducts.length"
-                    (click)="deleteSelecteItem()"
-                ></button>
+                    (click)="deleteSelecteItem()"></button>
             </div>
             <div class="p-toolbar-group-end">
-                <button
-                    pbutton
+                <button pbutton
                     pRipple
                     class="p-element p-button p-component"
                     ng-reflect-label="Submit"
-                    (click)="cutVideo()"
-                >
+                    (click)="cutVideo()">
                     <span class="p-button-label">Execute Split</span>
                 </button>
             </div>
         </p-toolbar>
-        <p-table
-            #dt
+        <p-table #dt
             [value]="duratioins"
             [rows]="10"
             [tableStyle]="{ 'min-width': '75rem' }"
             [(selection)]="selectedProducts"
             [rowHover]="true"
-            dataKey="id"
-        >
+            dataKey="id">
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 4rem">
@@ -88,33 +70,28 @@
                     <th>Operation</th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-duration>
+            <ng-template pTemplate="body"
+                let-duration>
                 <tr>
                     <td>
                         <p-tableCheckbox [value]="duration"></p-tableCheckbox>
                     </td>
                     <td>
-                        <p-inputMask
-                            [mask]="maskString"
+                        <p-inputMask [mask]="maskString"
                             [(ngModel)]="duration.start"
-                            [placeholder]="maskString"
-                        ></p-inputMask>
+                            [placeholder]="maskString"></p-inputMask>
                     </td>
                     <td>
-                        <p-inputMask
-                            [mask]="maskString"
+                        <p-inputMask [mask]="maskString"
                             [(ngModel)]="duration.end"
-                            [placeholder]="maskString"
-                        ></p-inputMask>
+                            [placeholder]="maskString"></p-inputMask>
                     </td>
                     <td>
-                        <button
-                            pButton
+                        <button pButton
                             pRipple
                             icon="pi pi-trash"
                             class="p-button-rounded p-button-warning"
-                            (click)="deleteItem(duration)"
-                        ></button>
+                            (click)="deleteItem(duration)"></button>
                     </td>
                 </tr>
             </ng-template>
