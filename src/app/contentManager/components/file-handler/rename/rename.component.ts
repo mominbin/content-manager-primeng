@@ -49,6 +49,21 @@ export class RenameComponent implements OnInit {
             this.selectedFiles[i].newName = response.data[i];
         }
     }
+
+    async renameCheckedFiles() {
+        const fileList = this.selectedFiles.map(function (file: any) {
+            return { name: file.name, new_name: file.newName };
+        });
+        const payload = {
+            path: this.folder,
+            fileList: fileList,
+        };
+        await this.dataService.renameCheckedFiles(payload);
+        for (let i = 0, length = this.selectedFiles.length; i < length; i++) {
+            this.selectedFiles[i].name = this.selectedFiles[i].newName;
+        }
+    }
+
     async rename(file: any) {
         const payload: RenamePayload = {
             path: this.folder,

@@ -28,6 +28,7 @@
                     pRipple
                     class="p-element p-button p-component"
                     ng-reflect-label="Submit"
+                    (click)="renameCheckedFiles()"
                     [disabled]="!selectedFiles"
                 >
                     <span class="p-button-label"
@@ -71,6 +72,7 @@
                     </td>
                     <td>
                         <input
+                            class="new-name-width"
                             type="text"
                             pInputText
                             [(ngModel)]="file.newName"

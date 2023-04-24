@@ -10,6 +10,7 @@ const API_URLS = {
     getFileList: `${FILE_HANDLE}getfilelist`,
     getNewName: `${FILE_HANDLE}getnewname`,
     getFilesNewName: `${FILE_HANDLE}getFilesNewName`,
+    renameCheckedFiles: `${FILE_HANDLE}renameCheckedFiles`,
     rename: `${FILE_HANDLE}rename`,
     splitVideo: `${LOCAL_URL}cutvideobatch`,
     concentrateVideo: `${LOCAL_URL}concentrateVideo`,
@@ -77,6 +78,14 @@ export class DataService {
     async getFilesNewName(payload: { [name: string]: string }): Promise<any> {
         return lastValueFrom(
             this.http.post<string>(API_URLS.getFilesNewName, payload)
+        );
+    }
+
+    async renameCheckedFiles(payload: {
+        [name: string]: string;
+    }): Promise<any> {
+        return lastValueFrom(
+            this.http.post<string>(API_URLS.renameCheckedFiles, payload)
         );
     }
 }
