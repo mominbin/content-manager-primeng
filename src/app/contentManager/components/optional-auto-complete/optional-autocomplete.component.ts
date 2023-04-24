@@ -7,7 +7,7 @@ import { ListItem } from '../../api/type';
 })
 export class OptionalAutoCompleteComponent implements OnInit {
     @Input() folders!: ListItem[];
-    sourceFileFolder: string = '';
+    sourceFileFolder: any;
     selectedFolder: ListItem | undefined;
     filteredFolders: any[] = [];
     constructor() {}
@@ -39,9 +39,15 @@ export class OptionalAutoCompleteComponent implements OnInit {
         if (!this.sourceFileFolder) {
             return;
         }
-        if (!this.sourceFileFolder.endsWith('\\')) {
-            this.sourceFileFolder = `${this.sourceFileFolder}\\`;
+        let folder = '';
+        if (typeof this.sourceFileFolder == 'object') {
+            folder = this.sourceFileFolder.code;
+        } else {
+            folder = this.sourceFileFolder;
         }
-        this.listRetrived.emit(this.sourceFileFolder);
+        if (!folder.endsWith('\\')) {
+            folder = `${folder}\\`;
+        }
+        this.listRetrived.emit(folder);
     }
 }

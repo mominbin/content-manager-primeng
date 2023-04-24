@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { defaultFolder } from 'src/app/contentManager/api/type';
 import { DataService } from 'src/app/contentManager/service/data.service';
 
 @Component({
@@ -8,18 +9,12 @@ import { DataService } from 'src/app/contentManager/service/data.service';
 export class MergeVideoComponent implements OnInit {
     sourceFileFolder: string = '';
     sourceFiles: any[] = [];
-    folders: any[] = [];
+    folders = defaultFolder;
     outputFileName = '';
     targetFiles: any[] = [];
     constructor(public dataService: DataService) {}
 
-    ngOnInit() {
-        this.folders = [
-            { name: 'D:\\jav', code: 'D:\\jav' },
-            { name: 'D:\\jav\\zzz', code: 'D:\\jav\\zzz' },
-            { name: 'D:\\jav\\done', code: 'D:\\jav\\done' },
-        ];
-    }
+    ngOnInit() {}
 
     async getFileList(folder: string) {
         // remove target list

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RenamePayload } from 'src/app/contentManager/api/type';
+import { RenamePayload, defaultFolder } from 'src/app/contentManager/api/type';
 import { DataService } from 'src/app/contentManager/service/data.service';
 
 @Component({
@@ -8,10 +8,11 @@ import { DataService } from 'src/app/contentManager/service/data.service';
     styleUrls: ['./rename.component.scss'],
 })
 export class RenameComponent implements OnInit {
-    folders = [];
+    folders = defaultFolder;
     folder = '';
-    files = [{ id: 0, name: 'aaa', newName: '' }];
     selectedFiles: any;
+    fileList = [];
+
     sourceFiles: any[] = [];
 
     constructor(public dataService: DataService) {}
@@ -22,22 +23,39 @@ export class RenameComponent implements OnInit {
         const response = await this.dataService.getFileList({
             filePath: folder,
         });
-        const result = response.data.map((item: any) => ({
+        const result = response.data.map((item: any, index: number) => ({
+            id: index,
             name: item,
-            code: item,
+            newName: item,
         }));
+        console.log(result);
+        this.fileList = response.data;
         this.sourceFiles = result;
     }
-    getNewName(file: any) {}
+    async getNewName(file: any) {
+        const currentFileName = file.name;
+        const response = await this.dataService.getFormatedName({
+            name: currentFileName,
+        });
+        file.newName = response.data;
+    }
 
+    async getCheckedFilesNewName() {
+        const payload = {
+            fileList: this.selectedFiles.map((file: any) => file.name),
+        };
+        const response = await this.dataService.getFilesNewName(payload);
+        for (let i = 0, length = this.selectedFiles.length; i < length; i++) {
+            this.selectedFiles[i].newName = response.data[i];
+        }
+    }
     async rename(file: any) {
         const payload: RenamePayload = {
             path: this.folder,
             name: file.name,
             newName: file.newName,
         };
-        // await this.dataService.rename(payload);
-        const index = this.files.findIndex((val) => val.id === file.id);
-        this.files[index].name = payload.newName;
+        await this.dataService.rename(payload);
+        file.name = file.newName;
     }
 }

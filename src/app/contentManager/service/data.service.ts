@@ -9,6 +9,7 @@ const VIDEO_INFO = `${LOCAL_URL}videoData/`;
 const API_URLS = {
     getFileList: `${FILE_HANDLE}getfilelist`,
     getNewName: `${FILE_HANDLE}getnewname`,
+    getFilesNewName: `${FILE_HANDLE}getFilesNewName`,
     rename: `${FILE_HANDLE}rename`,
     splitVideo: `${LOCAL_URL}cutvideobatch`,
     concentrateVideo: `${LOCAL_URL}concentrateVideo`,
@@ -64,6 +65,18 @@ export class DataService {
     async rename(payload: RenamePayload): Promise<any> {
         return lastValueFrom(
             this.http.post<RenamePayload>(API_URLS.rename, payload)
+        );
+    }
+
+    async getFormatedName(payload: { [name: string]: string }): Promise<any> {
+        return lastValueFrom(
+            this.http.post<string>(API_URLS.getNewName, payload)
+        );
+    }
+
+    async getFilesNewName(payload: { [name: string]: string }): Promise<any> {
+        return lastValueFrom(
+            this.http.post<string>(API_URLS.getFilesNewName, payload)
         );
     }
 }
