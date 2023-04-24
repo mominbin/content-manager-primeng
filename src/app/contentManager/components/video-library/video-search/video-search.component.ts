@@ -42,9 +42,12 @@ export class VideoSearchComponent implements OnInit {
         { name: 'logic', code: 'or' },
     ];
     selectedLogic: any;
-
-    leftExpressions = ['a', 'b', 'c'];
-
+    filteredLeftExpression: any;
+    leftExpressions = [
+        { name: 'genric', code: '0' },
+        { name: 'casts', code: 'and' },
+        { name: 'id', code: 'or' },
+    ];
     constructor() {}
 
     ngOnInit() {}
@@ -65,5 +68,17 @@ export class VideoSearchComponent implements OnInit {
             this.conditions.splice(indexToDelete, 1);
         }
         this.selectedConditions = null;
+    }
+
+    filterLeftExpression(_event: any) {
+        const filtered: any[] = [];
+        const query = _event.query;
+        for (let i = 0; i < this.leftExpressions.length; i++) {
+            const item = this.leftExpressions[i];
+            if (item.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+                filtered.push(item);
+            }
+        }
+        this.filteredLeftExpression = filtered;
     }
 }

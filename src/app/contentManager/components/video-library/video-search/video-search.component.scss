@@ -1,3 +1,11 @@
 .fixed-height {
     height: 900px;
 }
+.h48 {
+    height: 48px;
+}
+:host ::ng-deep {
+    .p-datatable-tbody {
+        height: 500px;
+    }
+}

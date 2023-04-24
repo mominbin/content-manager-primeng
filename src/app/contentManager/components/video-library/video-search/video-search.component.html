@@ -29,12 +29,12 @@
         </ng-template>
         <ng-template pTemplate="body"
             let-condition>
-            <tr>
+            <tr class="h48">
                 <td>
                     <p-tableCheckbox [value]="condition"></p-tableCheckbox>
                 </td>
                 <td>
-                    <p-dropdown [options]="logics"
+                    <!-- <p-dropdown [options]="logics"
                         [(ngModel)]="condition.logic"
                         optionLabel="logic"
                         [filter]="true"
@@ -59,18 +59,19 @@
                                 <div>{{ logic.name }}</div>
                             </div>
                         </ng-template>
-                    </p-dropdown>
-
+                    </p-dropdown> -->
+                    <p-autoComplete [(ngModel)]="condition.leftExpression"
+                        [suggestions]="filteredLeftExpression"
+                        (completeMethod)="filterLeftExpression($event)"
+                        field="name"
+                        [dropdown]="true"></p-autoComplete>
                 </td>
                 <td>
-                    <p-dropdown [options]="leftExpressions"
-                        [(ngModel)]="condition.leftExpression"
-                        placeholder="Select a left expression"
-                        [editable]="false"
-                        optionLabel=""></p-dropdown>
-                    <!-- <input type="text"
-                        pInputText
-                        [(ngModel)]="condition.leftExpression" /> -->
+                    <p-autoComplete [(ngModel)]="condition.leftExpression"
+                        [suggestions]="filteredLeftExpression"
+                        (completeMethod)="filterLeftExpression($event)"
+                        field="name"
+                        [dropdown]="true"></p-autoComplete>
                 </td>
                 <td>
                     <input type="text"

@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { DropdownModule } from 'primeng/dropdown';
+import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
 
 @NgModule({
     imports: [
@@ -21,6 +22,7 @@ import { DropdownModule } from 'primeng/dropdown';
         ButtonModule,
         RippleModule,
         DropdownModule,
+        AutoCompleteModule,
     ],
     declarations: [VideoSearchComponent],
     exports: [VideoSearchComponent],
