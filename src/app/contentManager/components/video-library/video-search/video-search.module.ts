@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { DropdownModule } from 'primeng/dropdown';
 import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
     imports: [
@@ -21,6 +22,7 @@ import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
         FormsModule,
         ButtonModule,
         RippleModule,
+        CheckboxModule,
         DropdownModule,
         AutoCompleteModule,
     ],

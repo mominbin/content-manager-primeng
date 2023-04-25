@@ -8,8 +8,86 @@
                 (click)="addCondition()"
             ></p-button>
         </div>
+        <div class="p-toolbar-group-end">
+            <button
+                pbutton
+                pRipple
+                class="p-element p-button p-component"
+                ng-reflect-label="Submit"
+                (click)="search()"
+            >
+                <span class="p-button-label">Rename Checked Files Name</span>
+            </button>
+        </div>
     </p-toolbar>
-    <p-table
+    <div class="p-fluid grid">
+        <div class="field col-12 md:col-1">
+            <p-checkbox
+                [(ngModel)]="toggleCheck"
+                [binary]="true"
+                inputId="binary"
+            ></p-checkbox>
+        </div>
+        <div class="field col-12 md:col-2">Logic</div>
+        <div class="field col-12 md:col-3">Left Expression</div>
+        <div class="field col-12 md:col-2">Operator</div>
+        <div class="field col-12 md:col-3">Right Expression</div>
+        <div class="field col-12 md:col-1"></div>
+    </div>
+    <div class="p-fluid grid" *ngFor="let condition of conditions">
+        <div class="field col-12 md:col-1">
+            <p-checkbox
+                [(ngModel)]="condition.checked"
+                [binary]="true"
+                inputId="binary"
+            ></p-checkbox>
+        </div>
+        <div class="field col-12 md:col-2">
+            <p-autoComplete
+                [(ngModel)]="condition.logic"
+                [suggestions]="filteredLogics"
+                (completeMethod)="filterLogic($event)"
+                field="name"
+                [dropdown]="true"
+            ></p-autoComplete>
+        </div>
+        <div class="field col-12 md:col-3">
+            <p-autoComplete
+                [(ngModel)]="condition.leftExpression"
+                [suggestions]="filteredLeftExpression"
+                (completeMethod)="filterLeftExpression($event)"
+                field="name"
+                [dropdown]="true"
+            ></p-autoComplete>
+        </div>
+        <div class="field col-12 md:col-2">
+            <p-autoComplete
+                [(ngModel)]="condition.operator"
+                [suggestions]="filteredOperators"
+                (completeMethod)="filterOperator($event)"
+                field="name"
+                [dropdown]="true"
+            ></p-autoComplete>
+        </div>
+        <div class="field col-12 md:col-3">
+            <input
+                type="text"
+                pInputText
+                [(ngModel)]="condition.rightExpression"
+            />
+        </div>
+        <div class="field col-12 md:col-1">
+            <button
+                pButton
+                pRipple
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-warning"
+                (click)="deleteItem(condition)"
+            ></button>
+        </div>
+    </div>
+
+    <!-- <p-table
         #dt
         [value]="conditions"
         [rows]="10"
@@ -79,5 +157,5 @@
                 </td>
             </tr>
         </ng-template>
-    </p-table>
+    </p-table> -->
 </div>

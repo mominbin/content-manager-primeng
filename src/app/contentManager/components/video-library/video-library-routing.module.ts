@@ -18,6 +18,13 @@ import { RouterModule } from '@angular/router';
                         (m) => m.VideoDetailModule
                     ),
             },
+            {
+                path: 'searchresult',
+                loadChildren: () =>
+                    import('./search-result/search-result.module').then(
+                        (m) => m.SearchResultModule
+                    ),
+            },
             { path: '**', redirectTo: '/notfound' },
         ]),
     ],

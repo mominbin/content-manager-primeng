@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { DataService } from 'src/app/contentManager/service/data.service';
 
 @Component({
     selector: 'app-video-search',
@@ -6,32 +8,14 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./video-search.component.scss'],
 })
 export class VideoSearchComponent implements OnInit {
-    formItem = {
-        LEFT_EXPRESSION: 'leftExpression',
-        RIGHT_EXPRESSION: 'rightExpression',
-        OPERATOR: 'operator',
-        LOGIC: 'logic',
-        PAGE_NUMBER: 'pageNumber',
-        CONDITIONS: 'conditions',
-    };
-
-    videoInfoField = {
-        VIDEO_ID: 'video_id',
-        IMG_URL: 'img_url',
-        DATE: 'date',
-        TITLE: 'title',
-        GOT_IT: 'got_it',
-        VIDEO_GENRES: 'video_genres',
-        VIDEO_LINK: 'video_link',
-    };
-
+    toggleCheck = false;
     conditions: any[] = [
         {
             id: 0,
-            logic: 'and',
-            leftExpression: 'genric',
-            operator: 'is',
-            rightExpression: 'hhh',
+            logic: { name: '' },
+            leftExpression: { name: 'video_casts' },
+            operator: { name: 'is' },
+            rightExpression: '八乃つばさ',
         },
     ];
     selectedConditions: any;
@@ -39,18 +23,33 @@ export class VideoSearchComponent implements OnInit {
     logics = [
         { name: 'logic', code: '0' },
         { name: 'and', code: 'and' },
-        { name: 'logic', code: 'or' },
+        { name: 'or', code: 'or' },
     ];
+    operators = [
+        { name: 'is', code: 'is' },
+        { name: '=', code: '=' },
+        { name: 'like', code: 'like' },
+        { name: 'not like', code: 'not like' },
+    ];
+    filteredLogics: any;
+    filteredOperators: any;
+
     selectedLogic: any;
     filteredLeftExpression: any;
-    leftExpressions = [
-        { name: 'genric', code: '0' },
-        { name: 'casts', code: 'and' },
-        { name: 'id', code: 'or' },
-    ];
-    constructor() {}
+    leftExpressions: any;
+    constructor(public dataService: DataService, private router: Router) {}
 
-    ngOnInit() {}
+    async ngOnInit() {
+        let result = await this.getTableColumn();
+        this.leftExpressions = result.data.map((exp: any) => ({
+            name: exp,
+            code: exp,
+        }));
+    }
+
+    async getTableColumn(): Promise<any> {
+        return await this.dataService.getTableFields();
+    }
 
     addCondition() {
         let index = this.conditions.length;
@@ -71,14 +70,51 @@ export class VideoSearchComponent implements OnInit {
     }
 
     filterLeftExpression(_event: any) {
-        const filtered: any[] = [];
         const query = _event.query;
-        for (let i = 0; i < this.leftExpressions.length; i++) {
-            const item = this.leftExpressions[i];
+        this.filteredLeftExpression = this.filterField(
+            this.leftExpressions,
+            query
+        );
+    }
+
+    filterLogic(_event: any) {
+        const query = _event.query;
+        this.filteredLogics = this.filterField(this.logics, query);
+    }
+
+    filterOperator(_event: any) {
+        const query = _event.query;
+        this.filteredOperators = this.filterField(this.operators, query);
+    }
+
+    filterField(fieldList: any, query: any) {
+        const filtered: any[] = [];
+        for (let i = 0; i < fieldList.length; i++) {
+            const item = fieldList[i];
             if (item.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
                 filtered.push(item);
             }
         }
-        this.filteredLeftExpression = filtered;
+        return filtered;
+    }
+
+    async search() {
+        const searchCondtions = this.conditions.map((condition) => ({
+            logic: condition.logic.name,
+            leftExpression: condition.leftExpression.name,
+            operator: condition.operator.name,
+            rightExpression: condition.rightExpression,
+        }));
+        const payload = {
+            conditions: searchCondtions,
+            pageNumber: 1,
+        };
+        let searchResult = await this.dataService.searchVideoByCondition(
+            payload
+        );
+        let hash = searchResult.data;
+        this.router.navigate([
+            'videolibrary/searchresult/searchhash/' + hash + '/page/1',
+        ]);
     }
 }

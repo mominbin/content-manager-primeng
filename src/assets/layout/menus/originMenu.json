@@ -316,6 +316,11 @@
                             "label": "Video Information",
                             "icon": "pi pi-fw pi-info-circle",
                             "routerLink": ["/videolibrary/videodetail"]
+                        },
+                        {
+                            "label": "Search Result",
+                            "icon": "pi pi-fw pi-info-circle",
+                            "routerLink": ["/videolibrary/searchresult"]
                         }
                     ]
                 }

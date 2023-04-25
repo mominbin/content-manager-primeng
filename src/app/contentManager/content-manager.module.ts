@@ -5,11 +5,12 @@ import { DataService } from './service/data.service';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
+import { VideoSearchService } from './service/video-search.service';
 
 @NgModule({
     declarations: [OptionalAutoCompleteComponent],
     imports: [FormsModule, AutoCompleteModule, DropdownModule, InputTextModule],
-    providers: [DataService],
+    providers: [DataService, VideoSearchService],
     exports: [OptionalAutoCompleteComponent],
 })
 export class ContentManagerModule {}

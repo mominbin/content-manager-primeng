@@ -26,6 +26,12 @@ const API_URLS = {
 @Injectable()
 export class DataService {
     constructor(private http: HttpClient) {}
+
+    async getVideoInfoByHash(payload: any): Promise<any> {
+        return lastValueFrom(
+            this.http.post<any>(API_URLS.getVideoInfoByHash, payload)
+        );
+    }
     async getCountries() {
         return lastValueFrom(
             this.http.get<any>('assets/demo/data/countries.json')
@@ -57,6 +63,10 @@ export class DataService {
         );
     }
 
+    async getTableFields(): Promise<any> {
+        return lastValueFrom(this.http.get<any>(API_URLS.videoField));
+    }
+
     async spliteVideo(payload: SpliteVideoPayload): Promise<any> {
         return lastValueFrom(
             this.http.post<SpliteVideoPayload>(API_URLS.splitVideo, payload)
@@ -86,6 +96,18 @@ export class DataService {
     }): Promise<any> {
         return lastValueFrom(
             this.http.post<string>(API_URLS.renameCheckedFiles, payload)
+        );
+    }
+
+    async searchVideoByCondition(payload: any): Promise<any> {
+        return lastValueFrom(
+            this.http.post<any>(API_URLS.searchVideoByCondition, payload)
+        );
+    }
+
+    async videoCustomizeSearch(payload: any): Promise<any> {
+        return lastValueFrom(
+            this.http.post<any>(API_URLS.videoCustomizeSearch, payload)
         );
     }
 }

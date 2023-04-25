@@ -20,3 +20,11 @@ export const defaultFolder = [
     { name: 'D:\\jav\\zzz', code: 'D:\\jav\\zzz' },
     { name: 'D:\\jav\\done', code: 'D:\\jav\\done' },
 ];
+
+export interface VideoInfoResponse {
+    data: {
+        videoList: [];
+        pageNumber: number;
+        totalPage: number;
+    };
+}
