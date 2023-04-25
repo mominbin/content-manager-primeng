@@ -25,7 +25,7 @@ export class SearchResultComponent implements OnInit {
     pageNumber: number = 1;
     totalPage: number = 1;
     pageArray!: Array<any>;
-    layout: string = 'list';
+    layout: string = 'grid';
     videoListData: VideoInfoResponse = {
         data: {
             videoList: [],
@@ -34,6 +34,11 @@ export class SearchResultComponent implements OnInit {
         },
     };
     hasRightExpression = false;
+
+    first: number = 0;
+
+    rows: number = 12;
+
     constructor(
         private dataService: DataService,
         private route: ActivatedRoute,
@@ -53,6 +58,11 @@ export class SearchResultComponent implements OnInit {
             this.pageArray = new Array(this.totalPage);
             this.payload = this.videoSearchService.searchPayload;
         }
+    }
+
+    onPageChange(_event: any) {
+        this.first = _event.first;
+        this.rows = _event.rows;
     }
 
     checkUrlQuery() {
