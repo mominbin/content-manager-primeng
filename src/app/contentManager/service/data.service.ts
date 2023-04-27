@@ -2,8 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { RenamePayload, SpliteVideoPayload } from '../api/type';
+import { environment } from 'src/environments/environment';
 let LOCAL_URL = 'http://localhost:8000/';
-
+if (environment.debug) {
+    LOCAL_URL = environment.apiEndpoint;
+}
 const FILE_HANDLE = `${LOCAL_URL}filehandle/`;
 const VIDEO_INFO = `${LOCAL_URL}videoData/`;
 const API_URLS = {
