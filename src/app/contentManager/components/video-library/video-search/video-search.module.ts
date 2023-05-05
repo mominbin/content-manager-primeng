@@ -9,8 +9,9 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { DropdownModule } from 'primeng/dropdown';
-import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CheckboxModule } from 'primeng/checkbox';
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
     imports: [
@@ -25,6 +26,7 @@ import { CheckboxModule } from 'primeng/checkbox';
         CheckboxModule,
         DropdownModule,
         AutoCompleteModule,
+        PaginatorModule,
     ],
     declarations: [VideoSearchComponent],
     exports: [VideoSearchComponent],

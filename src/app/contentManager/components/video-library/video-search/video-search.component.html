@@ -5,24 +5,31 @@
                 icon="pi pi-plus"
                 class="mr-2"
                 (click)="addCondition()"></p-button>
+
+            <p-dropdown [options]="searchTags"
+                [(ngModel)]="searchTag"
+                placeholder="Select a tag"
+                (onChange)="loadSearchConditions($event.value)"
+                [editable]="true"
+                optionLabel="name"></p-dropdown>
+
         </div>
         <div class="p-toolbar-group-end">
-            <button pbutton
-                pRipple
-                class="p-element p-button p-component"
-                ng-reflect-label="Submit"
+            <p-button icon="pi pi-fw pi-search"
+                label="Do Search"
                 (click)="search()">
-                <span class="p-button-label">Rename Checked Files Name</span>
-            </button>
+
+            </p-button>
         </div>
     </p-toolbar>
     <div class="p-fluid grid py-4">
         <div class="field col-12 md:col-1 flex lg:justify-content-center align-items-center">
-            <p-checkbox [(ngModel)]="toggleCheck"
-                [binary]="true"
-                inputId="binary"></p-checkbox>
+            <p-checkbox [value]="allSelected"
+                [(ngModel)]="allSelected"
+                (onChange)="toggoleSelectAll()"
+                [binary]="true"></p-checkbox>
         </div>
-        <div class="field col-12 md:col-2">Logic</div>
+        <div class="field col-12 md:col-2">Logic </div>
         <div class="field col-12 md:col-3">Left Expression</div>
         <div class="field col-12 md:col-2">Operator</div>
         <div class="field col-12 md:col-3">Right Expression</div>
@@ -31,9 +38,10 @@
     <div class="p-fluid grid"
         *ngFor="let condition of conditions">
         <div class="field col-12 md:col-1 flex lg:justify-content-center align-items-center">
-            <p-checkbox [(ngModel)]="condition.checked"
-                [binary]="true"
-                inputId="binary"></p-checkbox>
+            <p-checkbox [(ngModel)]="selectedConditions"
+                (onChange)="toggoleCheckbox()"
+                [value]="condition"
+                inputId="condition.id"></p-checkbox>
         </div>
         <div class="field col-12 md:col-2">
             <p-autoComplete [(ngModel)]="condition.logic"
@@ -70,75 +78,4 @@
         </div>
     </div>
 
-    <!-- <p-table
-        #dt
-        [value]="conditions"
-        [rows]="10"
-        [tableStyle]="{ 'min-width': '75rem' }"
-        [(selection)]="selectedConditions"
-        [rowHover]="true"
-        dataKey="id"
-        style="height: 600px"
-    >
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 4rem">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                </th>
-                <th>Logic</th>
-                <th>Left Expression</th>
-                <th>OPerator</th>
-                <th>Right Expression</th>
-                <th></th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-condition>
-            <tr class="h48">
-                <td>
-                    <p-tableCheckbox [value]="condition"></p-tableCheckbox>
-                </td>
-                <td>
-                    <p-autoComplete
-                        [(ngModel)]="condition.leftExpression"
-                        [suggestions]="filteredLeftExpression"
-                        (completeMethod)="filterLeftExpression($event)"
-                        field="name"
-                        [dropdown]="true"
-                    ></p-autoComplete>
-                </td>
-                <td>
-                    <p-autoComplete
-                        [(ngModel)]="condition.leftExpression"
-                        [suggestions]="filteredLeftExpression"
-                        (completeMethod)="filterLeftExpression($event)"
-                        field="name"
-                        [dropdown]="true"
-                    ></p-autoComplete>
-                </td>
-                <td>
-                    <input
-                        type="text"
-                        pInputText
-                        [(ngModel)]="condition.operator"
-                    />
-                </td>
-                <td>
-                    <input
-                        type="text"
-                        pInputText
-                        [(ngModel)]="condition.rightExpression"
-                    />
-                </td>
-                <td>
-                    <button
-                        pButton
-                        pRipple
-                        icon="pi pi-trash"
-                        class="p-button-rounded p-button-warning"
-                        (click)="deleteItem(condition)"
-                    ></button>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table> -->
 </div>

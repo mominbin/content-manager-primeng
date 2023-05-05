@@ -25,6 +25,17 @@ export interface VideoInfoResponse {
     data: {
         videoList: [];
         pageNumber: number;
-        totalPage: number;
+        totalRecords: number;
     };
+}
+
+export enum GlobalConstant {
+    LEFT_EXPRESSION = 'leftExpression',
+    RIGHT_EXPRESSION = 'rightExpression',
+    PAGE_NUMBER = 'pageNumber',
+    OPERATOR = 'operator',
+    LOGIC = 'logic',
+    CONDITIONS = 'conditions',
+    FILE_PATH = 'filePath',
+    HASH = 'hash',
 }

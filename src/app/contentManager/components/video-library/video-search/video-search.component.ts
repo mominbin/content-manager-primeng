@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ListItem } from 'src/app/contentManager/api/type';
 import { DataService } from 'src/app/contentManager/service/data.service';
 
 @Component({
@@ -8,16 +9,40 @@ import { DataService } from 'src/app/contentManager/service/data.service';
     styleUrls: ['./video-search.component.scss'],
 })
 export class VideoSearchComponent implements OnInit {
-    toggleCheck = false;
+    allSelected = false;
+    searchTag: any = '';
+    searchTags: ListItem[] = [];
     conditions: any[] = [
         {
             id: 0,
             logic: { name: '' },
             leftExpression: { name: 'video_casts' },
             operator: { name: 'is' },
-            rightExpression: '八乃つばさ',
+            rightExpression: '风间由美',
+        },
+        {
+            id: 1,
+            logic: { name: 'and' },
+            leftExpression: { name: 'video_genres' },
+            operator: { name: 'not like' },
+            rightExpression: '%VR%',
+        },
+        {
+            id: 2,
+            logic: { name: 'and' },
+            leftExpression: { name: 'video_genres' },
+            operator: { name: 'not like' },
+            rightExpression: '%综合%',
+        },
+        {
+            id: 2,
+            logic: { name: 'and' },
+            leftExpression: { name: 'video_genres' },
+            operator: { name: 'not like' },
+            rightExpression: '%介绍%',
         },
     ];
+
     selectedConditions: any;
 
     logics = [
@@ -45,19 +70,46 @@ export class VideoSearchComponent implements OnInit {
             name: exp,
             code: exp,
         }));
+
+        let response = await this.dataService.loadSearchTags();
+        this.searchTags = response.data.map((item: string) => ({
+            name: item.substring(0, 8),
+            code: item,
+        }));
+        this.searchTag = this.searchTags ? this.searchTags[0] : '';
+        this.loadSearchConditions(this.searchTag);
     }
 
     async getTableColumn(): Promise<any> {
         return await this.dataService.getTableFields();
     }
 
+    toggoleCheckbox() {
+        if (this.selectedConditions.length === this.conditions.length) {
+            this.allSelected = true;
+        } else {
+            this.allSelected = false;
+        }
+        console.log(this.selectedConditions);
+    }
+
+    toggoleSelectAll() {
+        if (this.allSelected) {
+            this.selectedConditions = this.conditions;
+        }
+
+        if (!this.allSelected) {
+            this.selectedConditions = [];
+        }
+    }
+
     addCondition() {
         let index = this.conditions.length;
         this.conditions.push({
-            id: index,
-            logic: 'and',
-            leftExpression: '',
-            operator: 'is',
+            id: 0,
+            logic: { name: 'and' },
+            leftExpression: { name: 'video_casts' },
+            operator: { name: 'is' },
             rightExpression: '',
         });
     }
@@ -99,22 +151,63 @@ export class VideoSearchComponent implements OnInit {
     }
 
     async search() {
+        if (this.searchTag) {
+            if (!this.searchTag.code) {
+                await this.dataService.searchVideoByCondition(
+                    this.getSearchPayload(this.searchTag)
+                );
+                this.router.navigate([
+                    'videolibrary/searchresult/searchhash/' +
+                        this.searchTag +
+                        '/page/1',
+                ]);
+                return;
+            }
+            this.router.navigate([
+                `videolibrary/searchresult/searchhash/${this.searchTag.code}/page/1`,
+            ]);
+            return;
+        }
+        let searchResult = await this.dataService.searchVideoByCondition(
+            this.getSearchPayload('')
+        );
+        let hash = searchResult.data;
+        this.router.navigate([
+            'videolibrary/searchresult/searchhash/' + hash + '/page/1',
+        ]);
+    }
+
+    getSearchPayload(tag: string) {
         const searchCondtions = this.conditions.map((condition) => ({
             logic: condition.logic.name,
             leftExpression: condition.leftExpression.name,
             operator: condition.operator.name,
             rightExpression: condition.rightExpression,
         }));
-        const payload = {
+        let payload: any = {
             conditions: searchCondtions,
             pageNumber: 1,
         };
-        let searchResult = await this.dataService.searchVideoByCondition(
-            payload
+        if (tag) {
+            payload.hashValue = tag;
+        }
+        console.log(payload);
+        return payload;
+    }
+
+    async loadSearchConditions(_event: any) {
+        if (!_event.code) {
+            return;
+        }
+        let response = await this.dataService.loadSearchConditions(
+            this.searchTag.code
         );
-        let hash = searchResult.data;
-        this.router.navigate([
-            'videolibrary/searchresult/searchhash/' + hash + '/page/1',
-        ]);
+        let conditions = response.data;
+        this.conditions = conditions.map((_condition: any) => ({
+            logic: { name: _condition.logic },
+            leftExpression: { name: _condition.leftExpression },
+            operator: { name: _condition.operator },
+            rightExpression: _condition.rightExpression,
+        }));
     }
 }

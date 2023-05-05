@@ -6,6 +6,7 @@ import { VideoSearchService } from 'src/app/contentManager/service/video-search.
 import { TagModule } from 'primeng/tag';
 import { DataViewModule } from 'primeng/dataview';
 import { RatingModule } from 'primeng/rating';
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
     imports: [
@@ -14,6 +15,7 @@ import { RatingModule } from 'primeng/rating';
         TagModule,
         DataViewModule,
         RatingModule,
+        PaginatorModule,
     ],
     declarations: [SearchResultComponent],
     providers: [VideoSearchService],

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { VideoInfoResponse } from 'src/app/contentManager/api/type';
 import {
     GlobalConstant,
@@ -23,26 +23,24 @@ export class SearchResultComponent implements OnInit {
     queryType: string = '';
     videoInfoArray: any[][] = [];
     pageNumber: number = 1;
-    totalPage: number = 1;
-    pageArray!: Array<any>;
+    totalRecords: number = 120;
     layout: string = 'grid';
     videoListData: VideoInfoResponse = {
         data: {
             videoList: [],
             pageNumber: 0,
-            totalPage: 0,
+            totalRecords: 120,
         },
     };
     hasRightExpression = false;
-
-    first: number = 0;
-
     rows: number = 12;
-
+    first: number = 1;
     constructor(
         private dataService: DataService,
         private route: ActivatedRoute,
-        private videoSearchService: VideoSearchService
+        private videoSearchService: VideoSearchService,
+        private location: Location,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -52,53 +50,66 @@ export class SearchResultComponent implements OnInit {
         }
         this.videoListData = this.videoSearchService.searchResult;
         if (this.videoListData) {
-            // this.splitVideoInfo(this.videoListData);
-            this.pageNumber = this.videoListData.data.pageNumber;
-            this.totalPage = this.videoListData.data.totalPage;
-            this.pageArray = new Array(this.totalPage);
+            this.setPaginationInfo(this.videoListData);
             this.payload = this.videoSearchService.searchPayload;
         }
     }
 
     onPageChange(_event: any) {
+        console.log(_event);
         this.first = _event.first;
         this.rows = _event.rows;
+        this.setToPage(_event.page + 1);
     }
 
     checkUrlQuery() {
         this.route.params.subscribe(async (params) => {
             const leftExpression = params[GlobalConstant.LEFT_EXPRESSION];
             const rightExpression = params[GlobalConstant.RIGHT_EXPRESSION];
-            const pageNumber = params[GlobalConstant.PAGE_NUMBER];
+            const pageNumber = parseInt(params[GlobalConstant.PAGE_NUMBER]);
             const hash = params[GlobalConstant.HASH];
-
+            console.log('check url query :', pageNumber);
             if (rightExpression) {
                 this.queryType = QueryType.CONDITIONS;
                 this.hasRightExpression = true;
+                let operator = 'is';
+                let newRightExpression = rightExpression;
+                if (
+                    leftExpression == MediaInfoField.VIDEO_CASTS ||
+                    leftExpression === MediaInfoField.VIDEO_GENRES
+                ) {
+                    operator = 'like';
+                    newRightExpression = `%${rightExpression}%`;
+                }
                 this.payload = {
                     conditions: [
                         {
                             [GlobalConstant.LOGIC]: '',
                             [GlobalConstant.LEFT_EXPRESSION]: leftExpression,
-                            [GlobalConstant.OPERATOR]: 'is',
-                            [GlobalConstant.RIGHT_EXPRESSION]: rightExpression,
+                            [GlobalConstant.OPERATOR]: operator,
+                            [GlobalConstant.RIGHT_EXPRESSION]:
+                                newRightExpression,
                         },
                     ],
                     pageNumber: pageNumber,
+                    limit: this.rows,
                 };
+
                 this.videoListData = await this.getVideoInfo(this.payload);
                 if (this.videoListData) {
-                    this.splitVideoInfo(this.videoListData);
+                    this.setPaginationInfo(this.videoListData);
                 }
             } else if (hash) {
                 this.queryType = QueryType.HASH;
                 this.payload = {
                     hashValue: hash,
                     pageNumber: pageNumber,
+                    limit: this.rows,
                 };
+                this.first = this.rows * (pageNumber - 1);
                 this.videoListData = await this.getVideoInfo(this.payload);
                 if (this.videoListData) {
-                    this.splitVideoInfo(this.videoListData);
+                    this.setPaginationInfo(this.videoListData);
                 }
             }
         });
@@ -109,31 +120,23 @@ export class SearchResultComponent implements OnInit {
     }
 
     async goToPage(pageNumber: number) {
+        const url = this.location.path();
+        const index = url.lastIndexOf('/');
+        const newUrl = `${url.substring(0, index)}/${pageNumber}`;
+        this.location.go(newUrl);
         this.payload[this.formItem.PAGE_NUMBER] = pageNumber;
-        let videoInfoData = await this.getVideoInfo(this.payload);
-        this.splitVideoInfo(videoInfoData);
+        this.payload[this.formItem.LIMIT] = this.rows;
+        this.videoListData = await this.getVideoInfo(this.payload);
+        this.setPaginationInfo(this.videoListData);
     }
 
-    splitVideoInfo(videoInfoData: VideoInfoResponse) {
-        this.videoInfoArray = this.splitArrayIntoChunks(
-            videoInfoData.data.videoList,
-            4
-        );
+    setPaginationInfo(videoInfoData: VideoInfoResponse) {
         this.pageNumber = videoInfoData.data.pageNumber;
-        this.totalPage = videoInfoData.data.totalPage;
-        this.pageArray = new Array(this.totalPage);
+        this.totalRecords = videoInfoData.data.totalRecords;
     }
 
     setToPage(pageNumber: number) {
         this.goToPage(pageNumber);
-    }
-
-    splitArrayIntoChunks(array: any[], chunkSize: number): any[][] {
-        const result = [];
-        for (let i = 0; i < array.length; i += chunkSize) {
-            result.push(array.slice(i, i + chunkSize));
-        }
-        return result;
     }
 
     async getVideoInfo(payload: object) {

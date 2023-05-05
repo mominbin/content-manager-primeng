@@ -1,3 +1,43 @@
-<p>
-  video-detail works!
-</p>
+    <p-panel [header]="videoDetail[infoField.TITLE]"
+        *ngIf="videoDetail">
+        <div class="grid p-fluid">
+            <div class="col-12 md:col-8">
+
+                <img [src]="videoDetail[infoField.IMG_URL]"
+                    alt=""
+                    style="width: 100%" />
+            </div>
+            <div class="col-12 md:col-4">
+
+                <div class="mb-3 row"
+                    *ngFor="let item of infoList">
+                    <label class="col-sm-2 col-form-label">{{ item.label }}</label>
+                    <div class="col-sm-10 flex align-items-center gap-2 flex-wrap">
+                        <ng-container *ngIf="item.children">
+                            <ng-container *ngFor="let child of item.children">
+                                <p-chip class="p-element"> <a [href]="child.href"> {{ child.value }} </a> </p-chip>
+                            </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="!item.children">
+                            <a [href]="item.href"
+                                class="form-control-plaintext"> {{ item.value }} </a>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="mb-3 row"
+                        *ngFor="let item of videoDetail.video_path">
+                        <div class="col-sm-2">
+
+                        </div>
+                        <div class="col-sm-10">
+                            <a (click)="navigateTo(item)">
+                                {{ item }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-panel>

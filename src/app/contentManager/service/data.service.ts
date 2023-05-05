@@ -22,6 +22,8 @@ const API_URLS = {
     getVideoInfoByHash: `${VIDEO_INFO}getVideoInfoByHash`,
     searchVideoByCondition: `${VIDEO_INFO}videoByCondition`,
     videoDetail: `${VIDEO_INFO}videoDetail`,
+    loadSearchConditions: `${VIDEO_INFO}loadSearchConditions`,
+    loadSearchTags: `${VIDEO_INFO}loadSearchTags`,
     videoStream: `${VIDEO_INFO}videoStream`,
     videoField: `${VIDEO_INFO}tableFields`,
     playVideo: `${VIDEO_INFO}playVideo`,
@@ -111,6 +113,25 @@ export class DataService {
     async videoCustomizeSearch(payload: any): Promise<any> {
         return lastValueFrom(
             this.http.post<any>(API_URLS.videoCustomizeSearch, payload)
+        );
+    }
+    async getVideoDetail(videoLink: string): Promise<any> {
+        return lastValueFrom(
+            this.http.get<any>(API_URLS.videoDetail, {
+                params: { video_link: videoLink },
+            })
+        );
+    }
+
+    async loadSearchTags(): Promise<any> {
+        return lastValueFrom(this.http.get<any>(API_URLS.loadSearchTags));
+    }
+
+    async loadSearchConditions(tag: string): Promise<any> {
+        return lastValueFrom(
+            this.http.get<any>(API_URLS.loadSearchConditions, {
+                params: { searchTag: tag },
+            })
         );
     }
 }

@@ -4,7 +4,10 @@ import { VideoDetailComponent } from './video-detail.component';
 
 @NgModule({
     imports: [
-        RouterModule.forChild([{ path: '', component: VideoDetailComponent }]),
+        RouterModule.forChild([
+            { path: '', component: VideoDetailComponent },
+            { path: 'linkid/:video_link', component: VideoDetailComponent },
+        ]),
     ],
     exports: [RouterModule],
 })
